@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 __PACKAGE__->export_tags(
     all => [
@@ -300,6 +300,26 @@ sub fetch_all_iterator {
         object_class => $class,
         @_
     );
+}
+
+=head2 column_is_boolean( I<column_name> )
+
+Returns true if the column type for I<column_name> is 'boolean'.
+
+=cut
+
+sub column_is_boolean {
+    my $self = shift;
+    my $col  = shift;
+    croak "column_name required" unless defined $col;
+    if (    $self->meta->column($col)
+        and $self->meta->column($col)->type eq 'boolean' )
+    {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 =head1 AUTHOR

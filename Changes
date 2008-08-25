@@ -1,5 +1,10 @@
 Revision history for Rose-DBx-Object-MoreHelpers
 
-0.01    xxx
+0.01    20 Aug 2008
         First version, released on an unsuspecting world.
+
+0.02    xxx
+        * add column_is_boolean method
+
+
 
