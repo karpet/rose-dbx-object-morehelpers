@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 __PACKAGE__->export_tags(
     all => [
@@ -137,53 +137,27 @@ sub primary_key_value {
     return scalar(@vals) > 1 ? \@vals : $vals[0];
 }
 
-=head2 flatten
+=head2 flatten( I<args> )
 
 Returns the serialized object and its immediately related objects.
 
-TODO this method does not yet support column aliases.
+As of version 0.03, this is just a wrapper around the as_tree()
+Helper method with the "force_load" arg set to true. I<args>
+are passed directly to the as_tree() method.
+
+Requires RDBO 0.7712 or later.
 
 =cut
 
 sub flatten {
-    my $self  = shift;
-    my $pairs = shift || $self->column_value_pairs;
-    my %flat  = %$pairs;
-    for ( keys %flat ) {
-        if ( blessed( $flat{$_} ) and $flat{$_}->isa('DateTime') ) {
-            $flat{$_} = "$flat{$_}";
-        }
+    my $self = shift;
+    if ( $Rose::DB::Object::VERSION < 0.7712 ) {
+        croak "Rose::DB::Object VERSION 0.7712 or later required";
     }
-    for my $rel ( $self->meta->relationships ) {
-        my $method = $rel->name;
-        my $val    = $self->$method;
-        next unless defined $val;
-        if ( ref $val eq 'ARRAY' ) {
-            my @flattened;
-            for my $obj (@$val) {
-                $obj->strip( leave => 'related_objects' );
-                my $f = $obj->column_value_pairs;
-                for ( keys %$f ) {
-                    if ( blessed( $f->{$_} ) && $f->{$_}->isa('DateTime') ) {
-                        $f->{$_} = "$f->{$_}";
-                    }
-                }
-                push( @flattened, $f );
-            }
-            $flat{$method} = \@flattened;
-        }
-        elsif ( blessed($val) and $val->isa('Rose::DB::Object') ) {
-
-            #$val->strip( leave => 'related_objects' );
-            $flat{$method} = $val->flatten;
-        }
-        else {
-
-            #$val->strip( leave => 'related_objects' );
-            $flat{$method} = $val->flatten;
-        }
+    elsif ( !$self->can('as_tree') ) {
+        croak "You must load Rose::DB::Object::Helpers as_tree() method";
     }
-    return \%flat;
+    return $self->as_tree( @_, force_load => 1 );
 }
 
 =head2 exists( [ @I<params> ] )
@@ -217,9 +191,7 @@ sub exists {
     my $self = shift;
     my @arg  = @_;
     if ( !@arg && ref($self) ) {
-
-        # TODO use *method_name* instead ?
-        for my $col ( $self->meta->column_names ) {
+        for my $col ( $self->meta->column_accessor_method_names ) {
             push( @arg, $col, $self->$col ) if defined( $self->$col );
         }
     }
@@ -251,7 +223,7 @@ sub has_related {
 =head2 has_related_pages( I<relationship_name>, I<page_size> )
 
 Returns the number of "pages" given I<page_size> for the count of related
-object for I<relationship_name>. Useful for creating pagers.
+objects for I<relationship_name>. Useful for creating pagers.
 
 =cut
 
@@ -364,13 +336,16 @@ L<http://search.cpan.org/dist/Rose-DBx-Object-MoreHelpers>
 
 =head1 ACKNOWLEDGEMENTS
 
+The Minnesota Supercomputing Institute C<< http://www.msi.umn.edu/ >>
+sponsored the development of this software.
+
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Peter Karman, all rights reserved.
+Copyright 2008 by the Regents of the University of Minnesota.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
 
-1;    # End of Rose::DBx::Object::MoreHelpers
+1;
