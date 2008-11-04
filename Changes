@@ -10,4 +10,7 @@ Revision history for Rose-DBx-Object-MoreHelpers
         * flatten now just a thin wrapper around as_tree()
           core Helper method
 
+0.04    4 Nov 2008
+        * has_related() now checks if $self can $rel . _count
+          and tries to handle it sanely if _count is not a method
 

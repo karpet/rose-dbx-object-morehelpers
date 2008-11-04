@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 __PACKAGE__->export_tags(
     all => [
@@ -217,7 +217,18 @@ sub has_related {
     my $self   = shift;
     my $rel    = shift or croak "need Relationship name";
     my $method = $rel . '_count';
-    return $self->$method;
+    if ( $self->can($method) ) {
+        return $self->$method;
+    }
+    else {
+        my $other = $self->$rel;
+        if ( ref $other eq 'ARRAY' ) {
+            return scalar @$other;
+        }
+        else {
+            return $other || 0;
+        }
+    }
 }
 
 =head2 has_related_pages( I<relationship_name>, I<page_size> )
