@@ -14,3 +14,6 @@ Revision history for Rose-DBx-Object-MoreHelpers
         * has_related() now checks if $self can $rel . _count
           and tries to handle it sanely if _count is not a method
 
+0.05    4 Nove 2008
+        * oops. fix 0.04 fix to always turn **integer** not object.
+
