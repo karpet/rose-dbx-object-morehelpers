@@ -17,3 +17,6 @@ Revision history for Rose-DBx-Object-MoreHelpers
 0.05    4 Nove 2008
         * oops. fix 0.04 fix to always turn **integer** not object.
 
+0.06    10 Nov 2008
+        * add moniker() and unique_value() methods
+

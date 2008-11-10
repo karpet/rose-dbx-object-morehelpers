@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 __PACKAGE__->export_tags(
     all => [
@@ -135,6 +135,45 @@ sub primary_key_value {
         push( @vals, scalar $self->$m );
     }
     return scalar(@vals) > 1 ? \@vals : $vals[0];
+}
+
+=head2 unique_value
+
+Returns the first single-column unique value from the object by default.
+This is intended for the common case where you use a serial integer as
+the primary key but want to display a more human-friendly value
+programmatically, like a name.
+
+If no unique single-column values are found, returns the primary_key_value().
+
+=cut
+
+sub unique_value {
+    my $self  = shift;
+    my @ukeys = $self->meta->unique_keys_column_names;
+    if (@ukeys) {
+        for my $k (@ukeys) {
+            if ( scalar(@$k) == 1 ) {
+                my $method = $k->[0];
+                return $self->$method;    # TODO column alias ??
+            }
+        }
+    }
+    return $self->primary_key_value;
+}
+
+=head2 moniker
+
+Returns the name of the class without any leading namespace qualifier.
+Similar to the DBIx::Class concept of 'moniker'.
+
+=cut
+
+sub moniker {
+    my $self  = shift;
+    my $class = $self->meta->class;
+    $class =~ s/^.+:://;
+    return $class;
 }
 
 =head2 flatten( I<args> )
