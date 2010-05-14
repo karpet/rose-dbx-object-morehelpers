@@ -26,7 +26,7 @@ use_ok('Rose::DBx::Object::MoreHelpers');
 
 }
 
-ok( my $rdbo = MyRDBO->new( id => '1;2', name => '3;4' ), "new rdbo object" );
+ok( my $rdbo = MyRDBO->new( id => '1;2', name => '3/4' ), "new rdbo object" );
 ok( my $pk_uri_escaped = $rdbo->primary_key_uri_escaped(),
     "get pk uri escaped" );
-is( $pk_uri_escaped, "1%3B2;;3%3B4", "pk escaped" );
+is( $pk_uri_escaped, "1%3b2;;3%2f4", "pk escaped" );
