@@ -23,6 +23,6 @@ Revision history for Rose-DBx-Object-MoreHelpers
 0.07    13 May 2010
         * change primary_key_uri_escaped() implementation to avoid sprintf().
 
-0.08    xxx
+0.08    13 May 2010
         * change primary_key_uri_escaped() (again) to match CatalystX::CRUD::Controller,
           also escaping any / marks.
