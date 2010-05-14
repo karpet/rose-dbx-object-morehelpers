@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 __PACKAGE__->export_tags(
     all => [
@@ -109,7 +109,7 @@ sub primary_key_uri_escaped {
     my @esc;
     for my $v (@vals) {
         $v = '' unless defined $v;
-        $v =~ s/;/ sprintf( "%%%02X", ';' ) /eg;
+        $v =~ s/;/\%3B/g;
         push @esc, $v;
     }
     if ( !grep { length($_) } @esc ) {

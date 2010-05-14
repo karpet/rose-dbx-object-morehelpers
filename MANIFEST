@@ -4,6 +4,6 @@ Makefile.PL
 README
 lib/Rose/DBx/Object/MoreHelpers.pm
 t/00-load.t
-t/boilerplate.t
+t/01-methods.t
 t/pod-coverage.t
 t/pod.t
