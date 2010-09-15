@@ -43,7 +43,7 @@ __PACKAGE__->export_tags(
         qw(
             primary_key_uri_escaped primary_key_value
             flatten exists has_related has_related_pages
-            fetch_all fetch_all_iterator
+            fetch_all fetch_all_iterator fetch_count
             )
     ],
 
@@ -52,7 +52,7 @@ __PACKAGE__->export_tags(
         qw(
             primary_key_uri_escaped primary_key_value
             flatten exists has_related has_related_pages
-            fetch_all fetch_all_iterator
+            fetch_all fetch_all_iterator fetch_count
             )
     ],
 );
@@ -320,6 +320,21 @@ sub fetch_all_iterator {
     my $self  = shift;
     my $class = $self->meta->class;
     return Rose::DB::Object::Manager->get_objects_iterator(
+        object_class => $class,
+        @_
+    );
+}
+
+=head2 fetch_count
+
+Shortcut for the Manager method get_objects_count().
+
+=cut
+
+sub fetch_count {
+    my $self  = shift;
+    my $class = $self->meta->class;
+    return Rose::DB::Object::Manager->get_objects_count(
         object_class => $class,
         @_
     );
