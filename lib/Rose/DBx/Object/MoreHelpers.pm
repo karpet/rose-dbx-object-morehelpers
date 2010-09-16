@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 __PACKAGE__->export_tags(
     all => [
