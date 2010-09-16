@@ -26,3 +26,7 @@ Revision history for Rose-DBx-Object-MoreHelpers
 0.08    13 May 2010
         * change primary_key_uri_escaped() (again) to match CatalystX::CRUD::Controller,
           also escaping any / marks.
+
+0.09    xxx
+        * added fetch_count() method (fcahoon@msi.umn.edu)
+
