@@ -130,9 +130,16 @@ value will be an array ref of values.
 
 sub primary_key_value {
     my $self = shift;
-    my @cols = $self->meta->primary_key_column_names;
+    my @cols = $self->meta->primary_key_columns;
     my @vals;
-    for my $m (@cols) {
+    for my $col (@cols) {
+        my $m;
+        if ( ref $col ) {
+            $m = $col->alias || $col->name;
+        }
+        else {
+            $m = $col;
+        }
         push( @vals, scalar $self->$m );
     }
     return scalar(@vals) > 1 ? \@vals : $vals[0];
