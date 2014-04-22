@@ -13,6 +13,7 @@ WriteMakefile(
         'Rose::DB::Object' => 0.770,
         'Rose::DBx::TestDB' => 0,
         'Scalar::Util'  => 0,
+        'Math::BigInt'  => 0,
         'Data::Dump'    => 0,
 
     },

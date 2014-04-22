@@ -36,7 +36,7 @@ Rose::DB::Object::Metadata::Relationship::ManyToMany
 
 use Rose::Class::MakeMethods::Generic ( scalar => ['debug'], );
 
-our $VERSION = '0.09';
+our $VERSION = '0.100';
 
 __PACKAGE__->export_tags(
     all => [
@@ -105,7 +105,7 @@ CatalystX::CRUD::Controller API.
 sub primary_key_uri_escaped {
     my $self = shift;
     my $val  = $self->primary_key_value;
-    my @vals = ref $val ? @$val : ($val);
+    my @vals = ref $val eq 'ARRAY' ? @$val : ($val);
     my @esc;
     for my $v (@vals) {
         $v = '' unless defined $v;
