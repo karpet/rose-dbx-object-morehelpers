@@ -1,5 +1,9 @@
 Revision history for Rose-DBx-Object-MoreHelpers
 
+0.100 22 April 2014
+ - fix primary_key_uri_escaped() to check explicitly for ref() eq ARRAY
+   in case the primary key is an object (e.g. BigInt)
+
 0.09 13 Nov 2012
  - added fetch_count() method (fcahoon@msi.umn.edu)
  - support column alias names in primary_key_value()
